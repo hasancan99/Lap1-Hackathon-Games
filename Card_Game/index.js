@@ -31,7 +31,11 @@ const game = async (deck) =>{
     let playerCard = deck.splice(0,1)[0]
     let oppCard = deck.splice(0,1)[0]
     console.log(`You card is ${playerCard}, would you like to draw a new card? (y/n)`)
+    interface(playerCard,oppCard)
+}
 
+
+const interface =(playerCard,oppCard)=>{
     readline.emitKeypressEvents(process.stdin)
     if (process.stdin.setRawMode !=null ) process.stdin.setRawMode(true)
     //this listens to key press
@@ -39,11 +43,17 @@ const game = async (deck) =>{
         if(key.name =="y"){
             process.stdin.pause()
             playerCard = deck.splice(0,1)[0]
-            console.log(playerCard)
+            console.log(`Your new Card is: ${playerCard}`)
             winLose(playerCard,oppCard)}
-        else{
+        else if (key.name=="n") {
             process.stdin.pause()
+            console.log("shouldn't be here")
             winLose(playerCard,oppCard)}
+            else{
+                process.stdin.pause()
+                console.log("PRESS Y OR N")
+                interface(playerCard,oppCard)
+            }
         })
     
 
@@ -56,17 +66,15 @@ const winLose=(player,opp)=>{
         console.log("You win!")
         console.log(`You had : ${player}`)
         console.log(`Opponent had ${opp}`)
-    }else if(player==opp){
+    }else if(player===opp){
         console.log("draw")
+    }else{console.log("YOU LOSE!")
         console.log(`You had : ${player}`)
-        console.log(`Opponent had ${opp}`)
-    }else{console.log("YOU LOSE!") }
-        console.log(`You had : ${player}`)
-        console.log(`Opponent had ${opp}`)
+        console.log(`Opponent had ${opp}`) }
 }
 
+//make a deck and then shuffle it
 let deck = deckGen()
-console.log(deck)
-
 deck = shuffleDeck(deck)
+
 game(deck)
