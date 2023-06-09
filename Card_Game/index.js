@@ -30,12 +30,17 @@ const shuffleDeck= deck=>{
 const game = async (deck) =>{
     let playerCard = deck.splice(0,1)[0]
     let oppCard = deck.splice(0,1)[0]
+    console.log(oppCard)
+    
     console.log(`You card is ${playerCard}, would you like to draw a new card? (y/n)`)
-    interface(playerCard,oppCard)
+    interface(playerCard,oppCard,deck)
+}
+const oppDecision=(oppCard,deck)=>{
+    console.log("hi")
+    return [oppCard<30?deck.splice(0,1)[0]:oppCard,deck]
 }
 
-
-const interface =(playerCard,oppCard)=>{
+const interface =(playerCard,oppCard,deck)=>{
     readline.emitKeypressEvents(process.stdin)
     if (process.stdin.setRawMode !=null ) process.stdin.setRawMode(true)
     //this listens to key press
@@ -44,33 +49,31 @@ const interface =(playerCard,oppCard)=>{
             process.stdin.pause()
             playerCard = deck.splice(0,1)[0]
             console.log(`Your new Card is: ${playerCard}`)
-            winLose(playerCard,oppCard)}
+            const [newoppCard, newdeck] = oppDecision(oppCard,deck)
+            winLose(playerCard,newoppCard)}
         else if (key.name=="n") {
             process.stdin.pause()
-            console.log("shouldn't be here")
-            winLose(playerCard,oppCard)}
+            const [newoppCard,newdeck] = oppDecision(oppCard,deck)
+            winLose(playerCard,newoppCard)}
             else{
                 process.stdin.pause()
                 console.log("PRESS Y OR N")
                 interface(playerCard,oppCard)
             }
-        })
-    
-
-    
-    
+        })    
     
 }
+
 const winLose=(player,opp)=>{
     if (player>opp){
         console.log("You win!")
         console.log(`You had : ${player}`)
-        console.log(`Opponent had ${opp}`)
+        console.log(`Opponent had : ${opp}`)
     }else if(player===opp){
         console.log("draw")
     }else{console.log("YOU LOSE!")
         console.log(`You had : ${player}`)
-        console.log(`Opponent had ${opp}`) }
+        console.log(`Opponent had : ${opp}`) }
 }
 
 //make a deck and then shuffle it
